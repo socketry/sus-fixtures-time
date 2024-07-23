@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <time.h>
 
+// Print the duration, actual time, and error for a range of durations.
 int main(int argc, char **argv)
 {
 	printf("duration,actual,error\n");

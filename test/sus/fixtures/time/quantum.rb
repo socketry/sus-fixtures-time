@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2023, by Samuel Williams.
+# Copyright, 2023-2024, by Samuel Williams.
 
 require 'sus/fixtures/time/quantum'
 
@@ -12,8 +12,10 @@ describe Sus::Fixtures::Time do
 	end
 	
 	it "should be a reasonable value" do
-		10.times do
-			expect{sleep(1)}.to have_duration(be_within(subject::QUANTUM).of(1))
+		durations = [0.01, 0.1, 1.0]
+		
+		durations.each do |duration|
+			expect{sleep(duration)}.to have_duration(be < (duration + subject::QUANTUM))
 		end
 	end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2023, by Samuel Williams.
+# Copyright, 2023-2024, by Samuel Williams.
 
 module Sus
 	module Fixtures
@@ -19,27 +19,29 @@ module Sus
 					@precision ||= self.measure_host_precision
 				end
 				
-				def measure(repeats, duration)
+				def measure_host_precision(repeats: 1000, duration: 0.1, factor: 2.0)
+					step = duration / repeats
+					
 					start_time = self.now
 					repeats.times do
-						sleep(duration)
+						sleep(step)
 					end
 					end_time = self.now
 					
-					return (end_time - start_time) - (repeats * duration)
+					# Total execution time, minus the expected execution time = overhead.
+					error = (end_time - start_time) - duration
+					
+					# It's not like this is a precise measurement anyway...
+					return error * factor
 				end
 				
-				def measure_host_precision(repeats = 100, duration = 0.001)
-					actual_duration = measure(repeats, duration) - measure(repeats, 0)
-					error = actual_duration / repeats
-					
-					if error < 0.0
-						warn "Invalid precision measurement: #{actual_duration} < #{expected_duration}"
-						return 0.1
-					end
-					
-					# This computes the overhead of sleep, called `repeats` times:
-					return error
+				def calculate_mean(values)
+					values.sum.to_f / values.size
+				end
+				
+				def calculate_standard_deviation(values, mean)
+					variance = values.inject(0.0){|sum, value| sum + (value - mean) ** 2} / values.size
+					Math.sqrt(variance)
 				end
 				
 				def now

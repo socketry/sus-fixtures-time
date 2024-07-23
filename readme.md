@@ -4,21 +4,15 @@ Provides a convenient fixtures for time-related tests.
 
 [![Development Status](https://github.com/socketry/sus-fixtures-time/workflows/Test/badge.svg)](https://github.com/socketry/sus-fixtures-time/actions?workflow=Test)
 
-## Installation
+## Motivation
 
-``` bash
-$ bundle add sus-fixtures-time
-```
+Time-related tests are notoriously flakey due to changes in hardware performance and software load. Typically, a test that measures duration will work fine locally, but fail on a continuous integration (CI) server. This is because the CI server is under load which results in significantly slower test execution times. This gem provides a mechanism to try and measure this overhead, and adjust the test expectations to account for it. This is done by measuring the time taken to perform a simple operation, and then using that as a baseline.
 
 ## Usage
 
-``` ruby
-let(:quantum) {Sus::Fixtures::Time::Quantum}
+Please see the [project documentation](https://socketry.github.io/sus-fixtures-time/) for more details.
 
-it 'measures time' do
-	expect{sleep(1)}.to have_duration(be_within(quantum).of(1))
-end
-```
+  - [Getting Started](https://socketry.github.io/sus-fixtures-time/guides/getting-started/index) - This guide explains how to use the `sus-fixtures-time` gem to test time-related code.
 
 ## Contributing
 
