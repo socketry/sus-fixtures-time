@@ -5,3 +5,13 @@
 
 require_relative 'time/quantum'
 require_relative 'time/version'
+
+# @namespace
+module Sus
+	# @namespace
+	module Fixtures
+		# @namespace
+		module Time
+		end
+	end
+end

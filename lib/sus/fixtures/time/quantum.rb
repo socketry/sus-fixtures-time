@@ -6,19 +6,33 @@
 module Sus
 	module Fixtures
 		module Time
+			# Represents the smallest possible time interval that can be measured given the current system overheads.
 			class Quantum
+				# Resolve the quantum for the current system.
+				#
+				# @returns [Float] The quantum for the current system in seconds.
 				def self.resolve
 					self.new.to_f
 				end
 				
+				# @returns [Float] the quantum for the current system in seconds.
 				def to_f
 					precision
 				end
 				
+				# Lazily compute the precision of the current system.
+				#
+				# @returns [Float] the quantum for the current system in seconds.
 				def precision
 					@precision ||= self.measure_host_precision
 				end
 				
+				# Measure the precision of the current system.
+				#
+				# @parameter repeats [Integer] The number of times to repeat the measurement.
+				# @parameter duration [Float] The duration of the measurement in seconds.
+				# @parameter factor [Float] A scaling factor to apply to the measured overhead.
+				# @returns [Float] the quantum for the current system in seconds.
 				def measure_host_precision(repeats: 1000, duration: 0.1, factor: 2.0)
 					step = duration / repeats
 					
@@ -35,14 +49,7 @@ module Sus
 					return error * factor
 				end
 				
-				def calculate_mean(values)
-					values.sum.to_f / values.size
-				end
-				
-				def calculate_standard_deviation(values, mean)
-					variance = values.inject(0.0){|sum, value| sum + (value - mean) ** 2} / values.size
-					Math.sqrt(variance)
-				end
+				private
 				
 				def now
 					Process.clock_gettime(Process::CLOCK_MONOTONIC)
