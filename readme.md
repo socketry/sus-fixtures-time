@@ -1,4 +1,4 @@
-# Sus::Fixtures::Async::HTTP
+# Sus::Fixtures::Time
 
 Provides a convenient fixtures for time-related tests.
 
