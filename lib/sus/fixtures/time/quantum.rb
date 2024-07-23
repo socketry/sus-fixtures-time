@@ -42,8 +42,15 @@ module Sus
 					end
 					end_time = self.now
 					
-					# Total execution time, minus the expected execution time = overhead.
-					error = (end_time - start_time) - duration
+					actual_duration = end_time - start_time
+					
+					if actual_duration < duration
+						warn "Expected to sleep for #{duration}+ seconds, but only slept for #{actual_duration} seconds."
+						error = 0.1
+					else
+						# Total execution time, minus the expected execution time = overhead.
+						error = actual_duration - duration
+					end
 					
 					# It's not like this is a precise measurement anyway...
 					return error * factor
